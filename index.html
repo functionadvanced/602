@@ -1,0 +1,201 @@
+<!doctpye html>
+<html>
+	<head>
+		<meta charset='utf-8' />
+		<title>602</title>
+		<link rel='stylesheet' href='http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css'/>
+		<script src="three.min.js"></script>
+		<link rel='shortcu icon' href='favicon.gif'/>
+		<style>
+			@font-face{ 
+				font-family: Margot_Fette;
+				src: url('Margot_Fette.ttf');
+			}
+			.my_section{
+				padding: 100px;
+				text-shadow: 0px 0px 1px white;
+				font-family: Margot_Fette,"Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
+			}
+			.my_section h1{
+				font-size: 80px;
+			}
+			img{
+				margin: 50px;
+				margin-left: 0px;
+			}
+			#Title{
+				background-color: yellow;
+			}
+			#canvas3d{
+				width: 400px;
+				height: 400px;
+			}
+			#Position{
+				background-color: green;
+			}
+			#People{
+				background-color: cyan;
+			}
+			#Environment{
+				background-color: orange;
+			}
+			#Study{
+				background-color: brown;
+			}
+			#Play{
+				background-color: PowderBlue;
+			}
+			#Meet{
+				background-color: SpringGreen;
+			}
+			#Leave{
+				background-color: Salmon;
+			}
+		</style>
+	</head>
+	<body>
+		<div id='Title' class='my_section'>
+			<div class='container'>
+				<h1>“602”是我们的宿舍！</h1>
+				<h2>"602" is our hostel!</h2>
+				<div id='canvas3d'></div>
+			</div>
+		</div>
+		<div id='Position' class='my_section'>
+			<div class='container'>
+				<h1>坐落于北京大学39楼</h1>
+				<h2>悠悠历史，百年名校</h2>
+				<h2>Located in Building 39, Peking University</h2>
+				<img src='pku.png'/>
+				<img src='buildings.png'/>
+			</div>
+		</div>
+		<div id='People' class='my_section'>
+			<div class='container'>
+				<h1>居住着:</br>鞠培中 姜笑雨 蒋明轩 汪建峰</h1>
+				<h2>和睦相处，共同进步</h2>
+				<h2>There are four people: Peizhong Ju, Xiaoyu Jiang, Mingxuan Jiang, Jianfeng Wang</h2>
+				<img src='face1.png'/>
+				<img src='face2.png'/>
+				<img src='face1.png'/>
+				<img src='face1.png'/>
+			</div>
+		</div>
+		<div id='Environment' class='my_section'>
+			<div class='container'>
+				<h1>宽敞明亮的环境</h1>
+				<h2>座位舒适、采光充足、通风良好</h2>
+				<h2>Nice environment</h2>
+				<img src='seat.png'/>
+			</div>
+		</div>
+		<div id='Study' class='my_section'>
+			<div class='container'>
+				<h1>共同学习的氛围</h1>
+				<h2>为中华之崛起而读书</h2>
+				<h2>We work hard</h2>
+				<img src='books.png'/>
+			</div>
+		</div>
+		<div id='Play' class='my_section'>
+			<div class='container'>
+				<h1>一起游戏的欢乐</h1>
+				<h2>偷得浮生半日闲</h2>
+				<h2>We play together</h2>
+				<img src='dota.png'/>
+				<img src='wolf2.jpg'/>
+			</div>
+		</div>
+		<div id='Meet' class='my_section'>
+			<div class='container'>
+				<h1>我们相遇于2013年</h1>
+				<h2>前世的500次回眸，才换来今生的擦肩而过</h2>
+				<h2>We met each other in 2013</h2>
+				<img src='calendar3.png'/>
+			</div>
+		</div>
+		<div id='Leave' class='my_section'>
+			<div class='container'>
+				<h1>我们将于2016年各奔东西</h1>
+				<h2>世上没有不散的宴席</h2>
+				<h2>We will separate in 2016</h2>
+				<img src='leave.png'/>
+			</div>
+		</div>
+		<script id = "kk">
+width = document.getElementById('canvas3d').clientWidth;
+height = document.getElementById('canvas3d').clientHeight;
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera( 45, width/height, 0.1, 1000 );
+var renderer = new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setClearColor("black", 0);
+renderer.setSize(width, height);
+document.getElementById('canvas3d').appendChild(renderer.domElement);
+var geometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+var material = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+var cube = new Array();
+for (i = 0;i < 512;++i)
+	cube[i] = new THREE.Mesh(geometry, material);
+for (i = 0;i < 8;++i)
+	for (j = 0;j < 8;++j)
+		for (k = 0;k < 8;++k)
+			cube[i * 64 + j * 8 + k].position.set((i-3.5) * 2.3, (j-3.5) * 2.3, (k-3.5) * 2.3);
+camera.position.set(27, -3, 30);
+camera.up.set(0, 0, 1);
+camera.lookAt({x:0, y:0, z:0});
+renderer.render(scene, camera);
+function TurnOn(pos){
+	scene.add(cube[pos]);
+}
+function TurnOff(pos){
+	scene.remove(cube[pos]);
+}
+function GradualColor(H, S, L){
+	material.color.setHSL(H, S, L);
+}
+var states = 0;
+var render = function(i) {
+	if (i >= 512)	{
+		i = 0;
+		++states;
+		if (states == 6)
+			states = 0;
+	}
+	switch(states)	{
+	case 0:
+		for (k = 0;k < 8;++k)
+			TurnOn(i + k);
+		i += 8;
+		break;
+	case 1:
+		for (k = 0;k < 8;++k)
+			TurnOff(511 - (i + k));
+		i += 8;
+		break;
+	case 2:
+		for (k = 0;k < 64;++k)
+			TurnOn(i + k);
+		i += 64;
+		break;
+	case 3:
+		for (k = 0;k < 64;++k)
+			TurnOff(511 - (i + k));
+		i += 64;
+		break;
+	case 4:
+		for (;i < 512;++i)
+			TurnOn(i);
+	default:
+		GradualColor(i / 512, 1, 0.5);
+		++i;
+		scene.rotateX(0.01);
+		break;
+	}
+	renderer.render(scene, camera);
+	scene.rotateZ(0.01);
+	setTimeout("render("+i+")", 20);
+}
+render(0);
+		</script>
+	</body>
+</html>
